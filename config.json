@@ -1,5 +1,5 @@
 {
-    "name": "Aluracord - Matrix (Felipe)",
+    "name": "Aluracord",
     "theme": {
         "colors": {
             "primary": {
@@ -26,12 +26,16 @@
                 "700": "#212931",
                 "800": "#181F25",
                 "900": "#101418",
-                "999": "#080A0C"
+                "999": "#000000"
             },
             "transparent": {
                 "opacity": "rgba(0, 0, 0, 0.3)"
             }
         }
+    },
+    "images": {
+        "noPic": "https://preview.redd.it/oc4d5zck25f71.png?width=516&format=png&auto=webp&s=7973d616398483a47a711f373339e0da970b30a6",
+        "backgroundImg": "url(https://images6.alphacoders.com/911/911401.jpg)"
     },
     "stickers": [
         "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_1.png",

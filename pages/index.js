@@ -13,6 +13,8 @@ function Title(props) {
                 color: ${appConfig.theme.colors.primary['500']};
                 font-size: 24px;
                 font-weight: 600;
+                margin-bottom: 32px; 
+                margin-top: 5px;
                 }
             `}</style>
         </>
@@ -34,15 +36,13 @@ function Title(props) {
 export default function PaginaInicial() {
     const [username, setUsername] = React.useState('')
     const route = useRouter()
-    const noPic = 'https://preview.redd.it/oc4d5zck25f71.png?width=516&format=png&auto=webp&s=7973d616398483a47a711f373339e0da970b30a6'
 
     return (
       <>
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
-            //  backgroundColor: appConfig.theme.colors.primary[100],
-            backgroundImage: 'url(https://images6.alphacoders.com/911/911401.jpg)',
+            backgroundImage: appConfig.images.backgroundImg,
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
           }}
         >
@@ -64,12 +64,9 @@ export default function PaginaInicial() {
             {/* Formulário */}
             <Box
               as="form"
-              onSubmit={function (event){
-                // Evita de recarregar a página por completo.
+              onSubmit={(event) => {
                 event.preventDefault()  
                 route.push('/chat')
-                /* Modo tradicional do navegador
-                window.location.href = '/chat' */
               }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -78,13 +75,12 @@ export default function PaginaInicial() {
               }}
             >
               <Title tag="h2">Seja bem-vindo!</Title>
-              <Text variant="body3" styleSheet={{ marginBottom: '32px', marginTop: '5px', color: appConfig.theme.colors.neutrals[300] }}>
+              {/* <Text variant="body3" styleSheet={{ marginBottom: '32px', marginTop: '5px', color: appConfig.theme.colors.neutrals[300] }}>
                 Piratas do Chapéu de Palha
-              </Text>
+              </Text> */}
   
               <TextField
                 fullWidth
-
                 textFieldColors={{
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
@@ -94,13 +90,9 @@ export default function PaginaInicial() {
                   },
                 }}
                 placeholder='Insira seu username do GitHub'
-                onChange={function handler(event){
-                  // Pegando o Valor
+                onChange={(event) => {
                   const value = event.target.value
-
-                  // Trocando o valor da variável
-                  // e com o React, atualiza os demais campos
-                    setUsername(value) 
+                  setUsername(value) 
                 }}
               />
               <Button
@@ -139,7 +131,7 @@ export default function PaginaInicial() {
                   borderRadius: '5%',
                   marginBottom: '16px',
                 }}
-                src={ username.length > 2 ? `https://github.com/${username}.png` : noPic }
+                src={ username.length > 2 ? `https://github.com/${username}.png` : appConfig.images.noPic }
               />
               <Text
                 variant="body4"
