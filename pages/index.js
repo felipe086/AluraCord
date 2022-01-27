@@ -1,38 +1,9 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components'
+import React from 'react'
+import { useRouter } from 'next/router'
 import appConfig from '../config.json'
 
-function GlobalStyle() {
-    return (
-        <style global jsx>{`
-            @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                list-style: none;
-            }
-            body {
-                font-family: 'Poppins', 'Open Sans', sans-serif;
-            }
-            /* App fit Height */ 
-            html, body, #__next {
-                min-height: 100vh;
-                display: flex;
-                flex: 1;
-            }
-            #__next {
-                flex: 1;
-            }
-            #__next > * {
-                flex: 1;
-            }
-            /* ./App fit Height */ 
-        `}</style>
-    )
-}
-
 function Title(props) {
-    console.log(props.children)
     const Tag = props.tag || 'h1'
     return (
         <>
@@ -61,12 +32,12 @@ function Title(props) {
 // export default HomePage
 
 export default function PaginaInicial() {
-    const username = 'felipe086'
-    const test = 'a'
-  
+    const [username, setUsername] = React.useState('')
+    const route = useRouter()
+    const noPic = 'https://preview.redd.it/oc4d5zck25f71.png?width=516&format=png&auto=webp&s=7973d616398483a47a711f373339e0da970b30a6'
+
     return (
       <>
-        <GlobalStyle />
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
@@ -93,6 +64,13 @@ export default function PaginaInicial() {
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit={function (event){
+                // Evita de recarregar a página por completo.
+                event.preventDefault()  
+                route.push('/chat')
+                /* Modo tradicional do navegador
+                window.location.href = '/chat' */
+              }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center',
@@ -106,6 +84,7 @@ export default function PaginaInicial() {
   
               <TextField
                 fullWidth
+
                 textFieldColors={{
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
@@ -114,10 +93,20 @@ export default function PaginaInicial() {
                     backgroundColor: appConfig.theme.colors.neutrals[800],
                   },
                 }}
+                placeholder='Insira seu username do GitHub'
+                onChange={function handler(event){
+                  // Pegando o Valor
+                  const value = event.target.value
+
+                  // Trocando o valor da variável
+                  // e com o React, atualiza os demais campos
+                    setUsername(value) 
+                }}
               />
               <Button
                 type='submit'
                 label='Entrar'
+                disabled={username.length < 3}
                 fullWidth
                 buttonColors={{
                   contrastColor: appConfig.theme.colors.neutrals["000"],
@@ -142,25 +131,25 @@ export default function PaginaInicial() {
                 borderColor: appConfig.theme.colors.primary[600],
                 borderRadius: '10px',
                 flex: 1,
-                minHeight: '240px',
+                minHeight: '250px',
               }}
             >
               <Image
                 styleSheet={{
-                  borderRadius: '50%',
+                  borderRadius: '5%',
                   marginBottom: '16px',
                 }}
-                src={`https://github.com/${username}.png`}
+                src={ username.length > 2 ? `https://github.com/${username}.png` : noPic }
               />
               <Text
                 variant="body4"
                 styleSheet={{
                   color: appConfig.theme.colors.neutrals[100],
                   padding: '3px 10px',
-                  borderRadius: '1000px'
                 }}
               >
-                {username.charAt(0).toUpperCase() + username.slice(1)}
+                {/* {username.charAt(0).toUpperCase() + username.slice(1)} */}
+                {username}
               </Text>
             </Box>
             {/* Photo Area */}
