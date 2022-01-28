@@ -3,6 +3,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import appConfig from '../config.json'
 
+
 function Title(props) {
     const Tag = props.tag || 'h1'
     return (
@@ -37,6 +38,19 @@ export default function PaginaInicial() {
     const [username, setUsername] = React.useState('')
     const route = useRouter()
 
+    // const [obj, setObj] = React.useState([])
+    // React.useEffect(() => {
+    //   fetch(`https://api.github.com/users/${username}`)
+    //       .then(async (resp) => await resp.json())
+    //       .then((data) => {
+    //         console.log(data);
+    //         setObj(data)
+    //       })
+    //       .catch((erro) => {
+    //         console.log(erro);
+    //       });
+    // }, [])
+
     return (
       <>
         <Box
@@ -69,16 +83,12 @@ export default function PaginaInicial() {
                 route.push('/chat')
               }}
               styleSheet={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', 
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center',
-                paddingBottom: '', 
               }}
             >
               <Title tag="h2">Seja bem-vindo!</Title>
-              {/* <Text variant="body3" styleSheet={{ marginBottom: '32px', marginTop: '5px', color: appConfig.theme.colors.neutrals[300] }}>
-                Piratas do Chapéu de Palha
-              </Text> */}
-  
+
               <TextField
                 fullWidth
                 textFieldColors={{
@@ -123,7 +133,7 @@ export default function PaginaInicial() {
                 borderColor: appConfig.theme.colors.primary[600],
                 borderRadius: '10px',
                 flex: 1,
-                minHeight: '250px',
+                minHeight: '270px',
               }}
             >
               <Image

@@ -1,23 +1,47 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function ChatPage() {
     const [mensagem, setMensagem] = React.useState('');
-    const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
+    const [listaDeMensagens, setListaDeMensagens] = React.useState([])
+
+    React.useEffect(() => {
+        supabase
+            .from('mensagens')
+            .select('*')
+            .order('id', { ascending: false })
+            .then(({ data }) => {
+                //console.log('Dados da consulta:', data)
+                setListaDeMensagens(data)
+            })
+    }, [])
 
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
             de: 'felipe086',
             texto: novaMensagem,
         };
-
-        setListaDeMensagens([
-            mensagem,
-            ...listaDeMensagens
-        ]);
-        setMensagem('');
+        
+        supabase
+            .from('mensagens')
+            .insert([
+                mensagem
+            ])
+            .then(({ data }) => {
+                // console.log('Criando mensagem: ', data);
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+                ])
+            })
+        setMensagem('')
     }
 
     return (
@@ -111,17 +135,21 @@ export default function ChatPage() {
 function Header() {
     return (
         <>
-            <Box styleSheet={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            color: appConfig.theme.colors.neutrals[210] }} >
+            <Box styleSheet={{
+                width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                color: appConfig.theme.colors.neutrals[210]
+            }} >
                 <Text variant='heading5'>
                     Chat
                 </Text>
                 <Button
-                    styleSheet={{ color: appConfig.theme.colors.neutrals[100],
-                    hover: {
-                        backgroundColor: appConfig.theme.colors.neutrals['050'],
-                        color: appConfig.theme.colors.neutrals['999']
-                    } }}
+                    styleSheet={{
+                        color: appConfig.theme.colors.neutrals[100],
+                        hover: {
+                            backgroundColor: appConfig.theme.colors.neutrals['050'],
+                            color: appConfig.theme.colors.neutrals['999']
+                        }
+                    }}
                     variant='tertiary'
                     colorVariant='light'
                     label='Logout'
@@ -138,7 +166,7 @@ function MessageList(props) {
         <Box
             tag="ul"
             styleSheet={{
-                overflowY: 'scroll',
+                overflow: 'auto',
                 display: 'flex',
                 flexDirection: 'column-reverse',
                 flex: 1,
@@ -175,7 +203,7 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/felipe086.png`}
+                                src={`https://github.com/${mensagem.de}.png`}
                             />
                             <Text tag="strong">
                                 {mensagem.de}
