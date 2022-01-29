@@ -39,8 +39,8 @@ export default function PaginaInicial() {
   const [dados, setDados] = useState('')
   const route = useRouter()
 
-  const getDados = async (value) => {
-    await fetch(`https://api.github.com/users/${value}`)
+  const getDados = (value) => {
+    fetch(`https://api.github.com/users/${value}`)
       .then((response) => response.json())
       .then((data) => {
         setDados(data);
@@ -77,7 +77,7 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={(event) => {
               event.preventDefault()
-              route.push('/chat')
+              route.push(`/chat?username=${username}`)
             }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center',
